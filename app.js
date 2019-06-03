@@ -26,14 +26,12 @@ io.on('connection', socket => {
 
 	socket.emit('previousMessages', messages);
 
-	console.log(`Users: ${count}`);
 	socket.emit('users', {count: count});
 	socket.broadcast.emit('users', {count: count});
 
 	users.push(socket.id);
 	socket.emit('listUsers', users);
 	socket.broadcast.emit('listUsers', users);
-	console.log('array: '+users);
 
 	socket.on('sendMessage', data => {
 		messages.push(data);
@@ -42,12 +40,12 @@ io.on('connection', socket => {
 
 	socket.on('disconnect', function() {
 		count--;
-		console.log(`Users: ${count}`);
 		socket.emit('users', {count: count});
+
 		users.splice(users.indexOf(socket.id),1);
 		socket.emit('listUsers', users);
 		socket.broadcast.emit('listUsers', users);
-		console.log('array: '+users);
+
 		socket.broadcast.emit('users', {count: count});
 	})
 });

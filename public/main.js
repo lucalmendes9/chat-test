@@ -54,5 +54,4 @@ $('#chat').submit( function(e){
 		renderMessage(objMessage);
 	}
 	
-
 })
