@@ -63,6 +63,15 @@ button {
     font-size: 26px;
 }
 
+.users {
+  text-align: center;
+}
+
+.users p {
+  font-size: 13px;
+  margin: 5px 0;
+}
+
 @media (max-width: 990px) {
 
   body button,

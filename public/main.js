@@ -12,6 +12,13 @@ const renderPeoples = data => {
 	}
 }
 
+const listarUsuarios = users => {
+	$('.users p').remove();
+	for(user of users){
+		$('.users').append('<p>'+user+'</p>');
+	}
+}
+
 socket.on('previousMessages', messages => {
 	for(message of messages){
 		renderMessage(message);
@@ -25,6 +32,10 @@ socket.on('receivedMessage', message => {
 socket.on('users', data => {
 	renderPeoples(data);
 })
+
+socket.on('listUsers', users => {
+	listarUsuarios(users);
+});
 		
 
 $('#chat').submit( function(e){
