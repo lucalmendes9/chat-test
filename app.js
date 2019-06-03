@@ -17,16 +17,30 @@ app.use('/', (req,res) => {
 });
 
 let messages = [];
+var count = 0;
 
 io.on('connection', socket => {
+	count++;
 	console.log(`socket connect: ${socket.id}`);
 
 	socket.emit('previousMessages', messages);
+
+	console.log(`Users: ${count}`);
+	socket.emit('users', {count: count});
+	socket.broadcast.emit('users', {count: count});
+
 
 	socket.on('sendMessage', data => {
 		messages.push(data);
 		socket.broadcast.emit('receivedMessage', data);
 	});
+
+	socket.on('disconnect', function() {
+		count--;
+		console.log(`Users: ${count}`);
+		socket.emit('users', {count: count});
+		socket.broadcast.emit('users', {count: count});
+	})
 });
 
 server.listen(porta);

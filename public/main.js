@@ -3,6 +3,14 @@ var socket = io('/');
 const renderMessage = message => {
 	$('.messages').append('<div class="message"><strong>'+ message.author +'</strong>:'+message.message+'');
 }
+const renderPeoples = data => {
+	console.log(data.count);
+	if(data.count > 1){
+		$('.peoples p').text(''+data.count+' usuarios online!');	
+	}else{
+		$('.peoples p').text(''+data.count+' usuario online!');	
+	}
+}
 
 socket.on('previousMessages', messages => {
 	for(message of messages){
@@ -13,6 +21,11 @@ socket.on('previousMessages', messages => {
 socket.on('receivedMessage', message => {
 	renderMessage(message);
 } )
+
+socket.on('users', data => {
+	renderPeoples(data);
+})
+		
 
 $('#chat').submit( function(e){
 	e.preventDefault();
@@ -26,8 +39,9 @@ $('#chat').submit( function(e){
 			message: message,
 		};
 		socket.emit('sendMessage', objMessage);
-	}
 
-	renderMessage(objMessage);
+		renderMessage(objMessage);
+	}
+	
 
 })
